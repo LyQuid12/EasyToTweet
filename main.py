@@ -88,6 +88,11 @@ def logout():
 	session['oauth_verifier'] = None
 	return redirect('/')
 
+@app.route('/keep-alive')
+def keep_alive():
+	return "Ready!"
+
+
 @app.errorhandler(500)
 def internal_server_error(e):
 	return render_template('error.html'), 500
