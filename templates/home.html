@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Homepage{% endblock %}
+{% block containercontent %}
+<br>
+<style>
+	.avatar {
+		border-radius: 50%;
+	}
+</style>
+<img src="{{ pp_url }}" alt="{{ screen_name }} avatar" class="avatar">
+<br>
+<p>Welcome, <strong>{{ name }}</strong> (<a href="https://twitter.com/{{ screen_name }}" target="_blank" style="text-decoration:none;">@{{ screen_name }}</a>). 
+	Click the Tweet button if you want to tweet something.
+</p>
+<p>Here, we have some basic information about your account :</p>
+<ul>
+	<li>You have Tweeted <span class="label label-success">{{ statuses_count }}</span> times.</li>
+	<li>You have <span class="label label-success">{{ followers_count }}</span> followers.</li>
+	<li>You follow <span class="label label-success">{{ friends_count }}</span> users.</li>
+</ul>
+<a href="/tweet" class="btn btn-small btn-primary">Tweet</a>
+<a href="/logout" class="btn btn-small btn-primary">Log out</a>
+{% endblock %}
