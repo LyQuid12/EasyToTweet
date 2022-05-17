@@ -53,16 +53,20 @@ def home():
 	followers_count = api.verify_credentials().followers_count
 	friends_count = api.verify_credentials().friends_count
 	statuses_count = api.verify_credentials().statuses_count
-	username = api.verify_credentials().name
+	name = api.verify_credentials().name
 	pp_url = api.verify_credentials().profile_image_url
+	
+	user = api.get_user(screen_name=screen_name)
+	join_date = user.created_at
 
 	return render_template('home.html',
 							screen_name=screen_name, 
 							followers_count=followers_count, 
 							friends_count=friends_count, 
 							statuses_count=statuses_count, 
-							name=username,
-							pp_url=pp_url)
+							name=name,
+							pp_url=pp_url,
+							join_date=join_date)
 
 
 @app.route('/tweet', methods=['GET', 'POST'])
