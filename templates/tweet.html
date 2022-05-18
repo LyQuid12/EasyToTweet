@@ -169,7 +169,7 @@
   <div class="wrapper">
     <form method="post" action="/tweet">
       <a style="color:#0b68e0; text-decoration:none; display: flex; justify-content: right;" href="/home">Back</a>
-      <p>Logged in as {{ name }}</p>
+      <p>Logged in as {{ screen_name }}</p>
       <div class="input-box">
         <div class="tweet-area">
           <textarea class="input editable" type="textarea" placeholder="What's happening?" class="form-control" name="tweet-form" maxlength="280" required autocomplete="off"></textarea>
@@ -180,7 +180,7 @@
         <ul class="icons">
           <li><i class="far fa-file-image"></i></li>
         </ul>
-        <p>Max characters 280</p>
+        <p>Max characters : 280</p>
         <input type="submit" value="Tweet">
       </div>
     </form>
