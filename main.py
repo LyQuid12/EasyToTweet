@@ -81,7 +81,6 @@ def tweet():
 	api = tweepy.API(auth)
 
 	screen_name = api.verify_credentials().screen_name
-	username = api.verify_credentials().name
 
 	form_data = request.form.get('tweet-form')
 	if form_data == None:
@@ -90,9 +89,7 @@ def tweet():
 		api.update_status(form_data)
 		update_count('data/tweet.json')
 	
-	return render_template('tweet.html',
-							screen_name=screen_name,
-							name=username)
+	return render_template('tweet.html', screen_name=screen_name)
 
 @app.route('/logout')
 def logout():
