@@ -59,6 +59,9 @@ def home():
 
 		user = api.get_user(screen_name=screen_name)
 		join_date = user.created_at
+		join_date = str(join_date)
+		join_date = join_date.replace("-", "/")
+		join_date = join_date.split("+")[0]
 
 		return render_template('home.html',
 								screen_name=screen_name, 
