@@ -102,8 +102,8 @@ def keep_alive():
 
 
 @app.errorhandler(500)
-def internal_server_error(e):
+def internal_server_error():
 	return render_template('error.html'), 500
 
 if __name__ == '__main__':
-	app.run(debug=True, port=port)
+	app.run(debug=isdebug, port=port)
