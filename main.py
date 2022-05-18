@@ -47,26 +47,30 @@ def callback():
 
 @app.route('/home')
 def home():
-	api = tweepy.API(auth)
+	try:
+		api = tweepy.API(auth)
 
-	screen_name = api.verify_credentials().screen_name
-	followers_count = api.verify_credentials().followers_count
-	friends_count = api.verify_credentials().friends_count
-	statuses_count = api.verify_credentials().statuses_count
-	name = api.verify_credentials().name
-	pp_url = api.verify_credentials().profile_image_url
-	
-	user = api.get_user(screen_name=screen_name)
-	join_date = user.created_at
+		screen_name = api.verify_credentials().screen_name
+		followers_count = api.verify_credentials().followers_count
+		friends_count = api.verify_credentials().friends_count
+		statuses_count = api.verify_credentials().statuses_count
+		name = api.verify_credentials().name
+		pp_url = api.verify_credentials().profile_image_url
 
-	return render_template('home.html',
-							screen_name=screen_name, 
-							followers_count=followers_count, 
-							friends_count=friends_count, 
-							statuses_count=statuses_count, 
-							name=name,
-							pp_url=pp_url,
-							join_date=join_date)
+		user = api.get_user(screen_name=screen_name)
+		join_date = user.created_at
+
+		return render_template('home.html',
+								screen_name=screen_name, 
+								followers_count=followers_count, 
+								friends_count=friends_count, 
+								statuses_count=statuses_count, 
+								name=name,
+								pp_url=pp_url,
+								join_date=join_date)
+
+	except tweepy.Forbidden:
+		return redirect(url_for('logout'))
 
 
 @app.route('/tweet', methods=['GET', 'POST'])
