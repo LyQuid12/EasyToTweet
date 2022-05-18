@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Title | Tweeting something</title>
+  <title>TweetsSync | Tweeting something</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.6/css/line.css">
@@ -169,7 +169,7 @@
   <div class="wrapper">
     <form method="post" action="/tweet">
       <a style="color:#0b68e0; text-decoration:none; display: flex; justify-content: right;" href="/home">Back</a>
-      <p>Logged in as {{ screen_name }}</p>
+      <p>Logged in as <a href="https://twitter.com/{{ screen_name }}" target="_blank" style="text-decoration:none;color: currentColor;">@{{ screen_name }}</a></p>
       <div class="input-box">
         <div class="tweet-area">
           <textarea class="input editable" type="textarea" placeholder="What's happening?" class="form-control" name="tweet-form" maxlength="280" required autocomplete="off"></textarea>
