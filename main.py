@@ -1,23 +1,14 @@
 from config import *
 from flask import Flask, render_template, request, url_for, redirect, session
 import tweepy
-import json
 from flask_session import Session
+from data.tweet import check_update, update_count, update_gist
 
 app = Flask(__name__)
 auth = tweepy.OAuth1UserHandler(consumer_key, consumer_secret, callback=callback)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-
-def update_count(filepath:str):
-	with open(filepath, 'r+') as j:
-		data = json.load(j)
-		data["count"] += 1
-		j.seek(0)
-		json.dump(data, j)
-		j.truncate()
-		j.close()
 
 @app.route('/')
 def index():
@@ -86,8 +77,11 @@ def tweet():
 	if form_data == None:
 		pass
 	else:
+		check_update()
 		api.update_status(form_data)
-		update_count('data/tweet.json')
+		update_count()
+		update_gist()
+
 	
 	return render_template('tweet.html', screen_name=screen_name)
 
@@ -100,9 +94,22 @@ def logout():
 def keep_alive():
 	return "Ready!"
 
+##### Error handler #####
+
+@app.errorhandler(404)
+def error_page_not_found(e):
+    return render_template('error.html'), 404
+
+@app.errorhandler(403)
+def error_forbidden(e):
+	return render_template('error.html'), 403
+
+@app.errorhandler(410)
+def error_gone(e):
+	return render_template('error.html'), 410
 
 @app.errorhandler(500)
-def internal_server_error():
+def error_internal_server_error(e):
 	return render_template('error.html'), 500
 
 if __name__ == '__main__':
