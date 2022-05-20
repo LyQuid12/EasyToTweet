@@ -116,5 +116,14 @@ def error_gone(e):
 def error_internal_server_error(e):
 	return render_template('error.html'), 500
 
+##### Force HTTPS #####
+
+@app.before_request
+def before_request():
+	if not request.is_secure:
+		url = request.url.replace('http://', 'https://', 1)
+		code = 301
+		return redirect(url, code=code)
+
 if __name__ == '__main__':
 	app.run(debug=isdebug, port=port)
