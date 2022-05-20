@@ -4,8 +4,6 @@ import json
 import os
 from config import *
 
-gist = gistyc.GISTyc(auth_token=gist_token)
-
 def check_update(filepath:str=os.getcwd()+'/data/tweet.json'):
     gist = 'https://gist.github.com/LyQuid12/'+gist_id
     html = requests.get(gist).text
