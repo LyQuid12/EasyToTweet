@@ -69,21 +69,25 @@ def home():
 
 @app.route('/tweet', methods=['GET', 'POST'])
 def tweet():
-	api = tweepy.API(auth)
+	try:
+		api = tweepy.API(auth)
 
-	screen_name = api.verify_credentials().screen_name
+		screen_name = api.verify_credentials().screen_name
 
-	form_data = request.form.get('tweet-form')
-	if form_data == None:
-		pass
-	else:
-		check_update()
-		api.update_status(form_data)
-		update_count()
-		update_gist()
+		form_data = request.form.get('tweet-form')
+		if form_data == None:
+			pass
+		else:
+			check_update()
+			api.update_status(form_data)
+			update_count()
+			update_gist()
 
+
+		return render_template('tweet.html', screen_name=screen_name)
 	
-	return render_template('tweet.html', screen_name=screen_name)
+	except tweepy.Forbidden:
+		return redirect(url_for('logout'))
 
 @app.route('/logout')
 def logout():
