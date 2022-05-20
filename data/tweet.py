@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import json
 import os
 from config import *
+import github
+from github import Gist
 
 def check_update(filepath:str=os.getcwd()+'/data/tweet.json'):
     gist = 'https://gist.github.com/LyQuid12/'+gist_id
@@ -29,10 +31,18 @@ def check_update(filepath:str=os.getcwd()+'/data/tweet.json'):
         tw.close()
         return False
 
-def update_gist(filepath:str=os.getcwd()+'/data/tweet.json'):
-	content=open(filepath, 'r').read()
-	headers = {'Authorization': f'token {gist_token}'}
-	r = requests.patch('https://api.github.com/gists/' + gist_id, data=json.dumps({'files':{filename:{"content":content}}}),headers=headers) 
+def update_gist(filename:str="tweet.json", filepath:str=os.getcwd()+'/data/tweet.json'):
+    with open(filepath, 'r') as tw:
+        content = tw.read()
+    gh = github.Github(gist_token)
+    gist = gh.get_gist(gist_id)
+    gist.edit(
+        description="Update Count for EasyToTweet",
+        files={
+            filename: github.InputFileContent(content=content)
+        }
+    )
+    tw.close()
 
 def update_count(filepath:str=os.getcwd()+'/data/tweet.json'):
 	with open(filepath, 'r+') as j:
