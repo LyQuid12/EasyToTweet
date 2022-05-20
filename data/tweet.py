@@ -1,4 +1,3 @@
-import gistyc
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -33,7 +32,9 @@ def check_update(filepath:str=os.getcwd()+'/data/tweet.json'):
         return False
 
 def update_gist(filepath:str=os.getcwd()+'/data/tweet.json'):
-    gist.update_gist(file_name=filepath, gist_id=gist_id)
+	content=open(filepath, 'r').read()
+	headers = {'Authorization': f'token {gist_token}'}
+	r = requests.patch('https://api.github.com/gists/' + gist_id, data=json.dumps({'files':{filename:{"content":content}}}),headers=headers) 
 
 def update_count(filepath:str=os.getcwd()+'/data/tweet.json'):
 	with open(filepath, 'r+') as j:
