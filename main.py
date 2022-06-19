@@ -78,13 +78,18 @@ def tweet():
 		if form_data == None:
 			pass
 		else:
-			check_update()
-			api.update_status(form_data)
-			update_count()
-			update_gist()
+			try:
+				check_update()
+				api.update_status(form_data)
+				update_count()
+				update_gist()
+				alert_msg = "Tweet sent!"
+				return render_template('tweet.html', screen_name=screen_name, alert_msg=alert_msg)
+			except tweepy.TweepyException as TwExc:
+				alert_msg = f"Error : {TwExc}"
+				return render_template('tweet.html', screen_name=screen_name, alert_msg=alert_msg)
 
-
-		return render_template('tweet.html', screen_name=screen_name)
+		return render_template('tweet.html', screen_name=screen_name, alert_msg='none')
 	
 	except tweepy.Forbidden:
 		return redirect(url_for('logout'))
