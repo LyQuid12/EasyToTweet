@@ -166,7 +166,10 @@
 </head>
 
 <script>
-  if ('{{ alert_msg }}' !== null) {
+  if ('{{ alert_msg }}' == "none") {
+    //pass
+  }
+  else {
     alert('{{ alert_msg }}');
   }
 </script>
