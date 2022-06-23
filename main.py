@@ -89,7 +89,7 @@ def tweet():
 				alert_msg = f"Error : {TwExc}"
 				return render_template('tweet.html', screen_name=screen_name, alert_msg=alert_msg)
 
-		return render_template('tweet.html', screen_name=screen_name, alert_msg=None)
+		return render_template('tweet.html', screen_name=screen_name, alert_msg="none")
 	
 	except tweepy.Forbidden:
 		return redirect(url_for('logout'))
