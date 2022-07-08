@@ -3,10 +3,12 @@ from flask import Flask, render_template, request, url_for, redirect, session
 import tweepy
 from flask_session import Session
 from data.tweet import check_update, update_count, update_gist
-from flask_hcaptcha import hCaptcha
+from flask_recaptcha import ReCaptcha
 
 app = Flask(__name__)
-hcaptcha = hCaptcha.init(app, site_key, key_secret, is_enabled=True)
+app.config['RECAPTCHA_SITE_KEY'] = site_key
+app.config['RECAPTCHA_SECRET_KEY'] = secret_key
+recaptcha = ReCaptcha(app)
 auth = tweepy.OAuth1UserHandler(consumer_key, consumer_secret, callback=callback)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -19,17 +21,18 @@ def index():
 			return render_template('index.html', goto='home', page_name='Home')
 	return render_template('index.html', goto='login', page_name='Log in')
 
-@app.route('/login')
+@app.route('/login', methods=["GET", "POST"])
 def login():
 	if session.get('oauth_verifier'):
 		if session['oauth_verifier']:
 			return redirect(url_for('home'))
 
-	authorize_url = "/logout"
-	if hcaptcha.verify():
-	    authorize_url = auth.get_authorization_url()
-	else:
-	    return redirect(url_for('logout'))
+	authorize_url = ""
+	if request.method == "POST"
+	    if recaptcha.verify():
+	        authorize_url = auth.get_authorization_url()
+	    else:
+	        authorize_url = "/logout"
 	return render_template('login.html', authorize_url=authorize_url)
 
 @app.route('/callback')
