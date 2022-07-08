@@ -83,9 +83,10 @@
           		<img src="{{ url_for('static', filename='images/icon_bg_blue.png') }}" alt="EasyToTweet logo bg blue" style="width: 12%; display: block; margin-left: auto; margin-right: auto;">
           		<h3 class="text-center pt-3">Log in Twitter account</h3>
           		<form method="post">
-          		    {{ hcaptcha }}
+          		    <script src="https://hcaptcha.com/1/api.js"></script>
+          		    <div class="h-captcha" data-sitekey="{{ site_key }}"></div>
 				    <a href="{{ authorize_url }}">
-				    	<input type="submit" class="btn btn-custom btn-lg btn-block mt-3" value="Log jn">
+				    	<input type="submit" class="btn btn-custom btn-lg btn-block mt-3" value="Log in">
 				    </a>
 				</form>
         	</div>
