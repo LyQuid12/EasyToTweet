@@ -3,14 +3,27 @@ from flask import Flask, render_template, request, url_for, redirect, session
 import tweepy
 from flask_session import Session
 from data.tweet import check_update, update_count, update_gist
-from flask_hcaptcha import hCaptcha
+import requests
 
 app = Flask(__name__)
-hcaptcha = hCaptcha(app=app, site_key=site_key, secret_key=secret_key, is_enabled=True)
 auth = tweepy.OAuth1UserHandler(consumer_key, consumer_secret, callback=callback)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+
+def hcaptcha_verify(response):
+    VERIFY_URL = "https://hcaptcha.com/siteverify"
+    
+    data = {
+        "secret": secret_key,
+        "response": response or request.form.get('h-captcha-response'),
+        "remoteip": request.environ.get('REMOTE_ADDR')
+        }
+
+    r = requests.post(VERIFY_URL, data=data)
+    return r.json()["success"] if r.status_code == 200 else False
+
 
 @app.route('/')
 def index():
@@ -27,11 +40,12 @@ def login():
 
 	authorize_url = ""
 	if request.method == "POST":
-	    if hcaptcha.verify():
+	    captcha_response = request.form['h-captcha-response']
+	    if hcaptcha_verify(captcha_response):
 	        return redirect(auth.get_authorization_url())
 	    else:
 	        authorize_url = "/logout"
-	return render_template('login.html', authorize_url=authorize_url)
+	return render_template('login.html', authorize_url=authorize_url,  site_key=site_key)
 
 @app.route('/callback')
 def callback():
