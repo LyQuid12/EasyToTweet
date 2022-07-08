@@ -3,8 +3,10 @@ from flask import Flask, render_template, request, url_for, redirect, session
 import tweepy
 from flask_session import Session
 from data.tweet import check_update, update_count, update_gist
+from flask_hcaptcha import hCaptcha
 
 app = Flask(__name__)
+hcaptcha = hCaptcha.init(app, site_key, key_secret, is_enabled=True)
 auth = tweepy.OAuth1UserHandler(consumer_key, consumer_secret, callback=callback)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -23,7 +25,11 @@ def login():
 		if session['oauth_verifier']:
 			return redirect(url_for('home'))
 
-	authorize_url = auth.get_authorization_url()
+	authorize_url = "/logout"
+	if hcaptcha.verify():
+	    authorize_url = auth.get_authorization_url()
+	else:
+	    return redirect(url_for('logout'))
 	return render_template('login.html', authorize_url=authorize_url)
 
 @app.route('/callback')
