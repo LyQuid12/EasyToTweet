@@ -3,12 +3,10 @@ from flask import Flask, render_template, request, url_for, redirect, session
 import tweepy
 from flask_session import Session
 from data.tweet import check_update, update_count, update_gist
-from flask_recaptcha import ReCaptcha
+from flask_hcaptcha import hCaptcha
 
 app = Flask(__name__)
-app.config['RECAPTCHA_SITE_KEY'] = site_key
-app.config['RECAPTCHA_SECRET_KEY'] = secret_key
-recaptcha = ReCaptcha(app)
+hcaptcha = hCaptcha(app=app, site_key=site_key, secret_key=secret_key, is_enabled=True)
 auth = tweepy.OAuth1UserHandler(consumer_key, consumer_secret, callback=callback)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -29,8 +27,8 @@ def login():
 
 	authorize_url = ""
 	if request.method == "POST":
-	    if recaptcha.verify():
-	        authorize_url = auth.get_authorization_url()
+	    if hcaptcha.verify():
+	        return redirect(auth.get_authorization_url())
 	    else:
 	        authorize_url = "/logout"
 	return render_template('login.html', authorize_url=authorize_url)
