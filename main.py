@@ -28,7 +28,7 @@ def login():
 			return redirect(url_for('home'))
 
 	authorize_url = ""
-	if request.method == "POST"
+	if request.method == "POST":
 	    if recaptcha.verify():
 	        authorize_url = auth.get_authorization_url()
 	    else:
