@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="Login to EasyToTweet">
-	<meta name="author" content="EterNomm">
+	<meta name="author" content="LyQuid">
 	<link rel="Icon" href="{{ url_for('static', filename='favicon.ico') }}">
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300i,400,700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -84,7 +84,7 @@
           		<h3 class="text-center pt-3">Log in Twitter account</h3>
           		<form method="post">
           		    <script src="https://hcaptcha.com/1/api.js"></script>
-          		    <div class="h-captcha" data-sitekey="{{ site_key }}"></div>
+          		    <div class="h-captcha text-center" data-sitekey="{{ site_key }}"></div>
 				    <a href="{{ authorize_url }}">
 				    	<input type="submit" class="btn btn-custom btn-lg btn-block mt-3" value="Log in">
 				    </a>
